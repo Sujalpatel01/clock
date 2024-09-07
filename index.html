@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Responsive Reading Clock</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+        :root {
+            --bg-color: #1a1a2e;
+            --clock-bg: #16213e;
+            --text-color: #e0e0e0;
+            --accent-color: #0f4c75;
+            --error-color: #721c24;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: var(--bg-color);
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-color);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .clock-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            background: var(--clock-bg);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3), inset 0 0 30px rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .clock {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            background: conic-gradient(from 0deg, #2c3e50 0deg 6deg, transparent 6deg 12deg) 0 0 / 5% 5%;
+        }
+
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: 50% 100%;
+            z-index: 10;
+            transition: transform 0.5s cubic-bezier(0.4, 2.3, 0.3, 1);
+        }
+
+        .hour-hand {
+            width: 8px;
+            height: 25%;
+            background-color: var(--text-color);
+            border-radius: 4px;
+        }
+
+        .minute-hand {
+            width: 6px;
+            height: 35%;
+            background-color: var(--text-color);
+            border-radius: 3px;
+        }
+
+        .second-hand {
+            width: 2px;
+            height: 40%;
+            background-color: var(--accent-color);
+            border-radius: 1px;
+        }
+
+        .center-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 11;
+        }
+
+        .number {
+            position: absolute;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .digital-time, .stopwatch-time {
+            font-size: 16px;
+            color: var(--text-color);
+            background-color: rgba(22, 33, 62, 0.8);
+            padding: 5px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin: 5px 0;
+        }
+
+        .stopwatch-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .stopwatch-controls button {
+            padding: 8px 16px;
+            font-size: 14px;
+            color: var(--text-color);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .stopwatch-controls button:first-child {
+            background-color: var(--accent-color);
+        }
+
+        .stopwatch-controls button:last-child {
+            background-color: var(--error-color);
+        }
+
+        .stopwatch-controls button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .reading-tracker {
+            background-color: rgba(22, 33, 62, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            width: 100%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .reading-tracker h2 {
+            margin-top: 0;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .reading-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .reading-form input, .reading-form button {
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .reading-form input {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+
+        .reading-form button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .reading-form button:hover {
+            background-color: #1a6aa2;
+        }
+
+        .reading-stats {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        @media (max-width: 500px) {
+            .clock-container {
+                width: 250px;
+                height: 250px;
+            }
+
+            .number {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="clock-container">
+            <div class="clock">
+                <div class="hand hour-hand"></div>
+                <div class="hand minute-hand"></div>
+                <div class="hand second-hand"></div>
+                <div class="center-dot"></div>
+            </div>
+        </div>
+        <div class="digital-time"></div>
+        <div class="stopwatch-time">00:00.00</div>
+        <div class="stopwatch-controls">
+            <button id="startStop">Start</button>
+            <button id="reset">Reset</button>
+        </div>
+        <div class="reading-tracker">
+            <h2>Reading Time Tracker</h2>
+            <form class="reading-form">
+                <input type="number" id="pageCount" placeholder="Total pages" required>
+                <input type="number" id="currentPage" placeholder="Current page" required>
+                <input type="number" id="readingTime" placeholder="Reading time (minutes)" required>
+                <button type="submit">Update Progress</button>
+            </form>
+            <div class="reading-stats"></div>
+        </div>
+    </div>
+
+    <script>
+        function setClockHands() {
+            const now = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+            const date = new Date(now);
+            const seconds = date.getSeconds();
+            const minutes = date.getMinutes();
+            const hours = date.getHours() % 12;
+
+            const secondDegrees = (seconds / 60) * 360;
+            const minuteDegrees = ((minutes + seconds / 60) / 60) * 360;
+            const hourDegrees = ((hours + minutes / 60) / 12) * 360;
+
+            document.querySelector('.second-hand').style.transform = `translateX(-50%) rotate(${secondDegrees}deg)`;
+            document.querySelector('.minute-hand').style.transform = `translateX(-50%) rotate(${minuteDegrees}deg)`;
+            document.querySelector('.hour-hand').style.transform = `translateX(-50%) rotate(${hourDegrees}deg)`;
+
+            const digitalTime = document.querySelector('.digital-time');
+            digitalTime.textContent = date.toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata' });
+        }
+
+        function createClockNumbers() {
+            const clock = document.querySelector('.clock');
+            for (let i = 1; i <= 12; i++) {
+                const number = document.createElement('div');
+                number.className = 'number';
+                number.textContent = i;
+                const angle = (i - 3) * 30 * (Math.PI / 180);
+                const x = Math.cos(angle) * 110 + 150;
+                const y = Math.sin(angle) * 110 + 150;
+                number.style.left = `${x}px`;
+                number.style.top = `${y}px`;
+                clock.appendChild(number);
+            }
+        }
+
+        // Stopwatch functionality
+        let stopwatchInterval;
+        let stopwatchTime = 0;
+        let isRunning = false;
+
+        const startStopBtn = document.getElementById('startStop');
+        const resetBtn = document.getElementById('reset');
+        const stopwatchDisplay = document.querySelector('.stopwatch-time');
+
+        function startStopStopwatch() {
+            if (isRunning) {
+                clearInterval(stopwatchInterval);
+                startStopBtn.textContent = 'Start';
+                startStopBtn.style.backgroundColor = 'var(--accent-color)';
+            } else {
+                stopwatchInterval = setInterval(updateStopwatch, 10);
+                startStopBtn.textContent = 'Stop';
+                startStopBtn.style.backgroundColor = 'var(--error-color)';
+            }
+            isRunning = !isRunning;
+        }
+
+        function resetStopwatch() {
+            clearInterval(stopwatchInterval);
+            stopwatchTime = 0;
+            updateStopwatchDisplay();
+            isRunning = false;
+            startStopBtn.textContent = 'Start';
+            startStopBtn.style.backgroundColor = 'var(--accent-color)';
+        }
+
+        function updateStopwatch() {
+            stopwatchTime += 10;
+            updateStopwatchDisplay();
+        }
+
+        function updateStopwatchDisplay() {
+            const minutes = Math.floor(stopwatchTime / 60000);
+            const seconds = Math.floor((stopwatchTime % 60000) / 1000);
+            const milliseconds = Math.floor((stopwatchTime % 1000) / 10);
+            stopwatchDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(2, '0')}`;
+        }
+
+        // Reading Time Tracker functionality
+        const readingForm = document.querySelector('.reading-form');
+        const readingStats = document.querySelector('.reading-stats');
+
+        readingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const totalPages = parseInt(document.getElementById('pageCount').value);
+            const currentPage = parseInt(document.getElementById('currentPage').value);
+            const readingTime = parseInt(document.getElementById('readingTime').value);
+
+            if (currentPage > totalPages) {
+                alert('Current page cannot be greater than total pages.');
+                return;
+            }
+
+            const pagesRead = currentPage;
+            const pagesLeft = totalPages - currentPage;
+            const percentageComplete = ((currentPage / totalPages) * 100).toFixed(2);
+            const estimatedTimeLeft = Math.round((pagesLeft / pagesRead) * readingTime);
+
+            readingStats.innerHTML = `
+                <p>Progress: ${percentageComplete}% complete</p>
+                <p>Pages left: ${pagesLeft}</p>
+                <p>Estimated time to finish: ${estimatedTimeLeft} minutes</p>
+            `;
+        });
+
+        startStopBtn.addEventListener('click', startStopStopwatch);
+        resetBtn.addEventListener('click', resetStopwatch);
+
+        createClockNumbers();
+        setClockHands();
+        setInterval(setClockHands, 1000);
+    </script>
+</body>
+</html>

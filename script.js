@@ -437,23 +437,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => document.head.removeChild(beforeElement), 10);
             };
 
-            // // Autoplay background music
-            // backgroundMusic.muted = true; // start muted
-            // const playBackgroundMusic = () => {
-            //     backgroundMusic.volume = 0.5;
-            //     const playPromise = backgroundMusic.play();
-            //     if (playPromise !== undefined) {
-            //         playPromise.then(() => {
-            //             console.log('Background music started playing.');
-            //             // Unmute after playback starts
-            //             setTimeout(() => {
-            //                 backgroundMusic.muted = false;
-            //             }, 3000);
-            //         }).catch(error => {
-            //             console.warn('Autoplay prevented. User interaction required to play music.', error);
-            //         });
-            //     }
-            // };
+            // Autoplay background music
+            backgroundMusic.muted = true; // start muted
+            const playBackgroundMusic = () => {
+                backgroundMusic.volume = 0.5;
+                const playPromise = backgroundMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('Background music started playing.');
+                        // Unmute after playback starts
+                        setTimeout(() => {
+                            backgroundMusic.muted = false;
+                        }, 3000);
+                    }).catch(error => {
+                        console.warn('Autoplay prevented. User interaction required to play music.', error);
+                    });
+                }
+            };
 
             createClockFace();
             setClock();

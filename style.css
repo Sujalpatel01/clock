@@ -1,0 +1,482 @@
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@300;400;500;700&display=swap');
+
+        /* Default Theme Variables */
+        :root {
+            --clock-size: clamp(280px, 90vw, 420px);
+            --primary-color: #3498db;
+            --secondary-color: #9b59b6;
+            --accent-color-1: #e74c3c;
+            --accent-color-2: #f39c12;
+            --bg-dark-1: #0a0a0a;
+            --bg-dark-2: #1a1a2e;
+            --bg-dark-3: #16213e;
+            --text-light: #ffffff;
+            --text-muted: #cbd5e0;
+
+            /* Rudraksha specific colors (less relevant if using images, but kept for consistency) */
+            --rudraksha-color-dark: #6e441a;
+            --rudraksha-color-light: #a06e3b;
+        }
+
+        /* Gold Theme */
+        body.gold-theme {
+            --primary-color: #d4af37; /* Gold */
+            --secondary-color: #a67c00; /* Darker Gold */
+            --accent-color-1: #ff5722; /* Orange-Red */
+            --accent-color-2: #ffc107; /* Amber */
+            --bg-dark-1: #1c1c1c;
+            --bg-dark-2: #2d2d2d;
+            --bg-dark-3: #3c3c3c;
+            --text-light: #f0e68c; /* Khaki */
+            --text-muted: #e0d5b0;
+        }
+
+        /* Green Theme */
+        body.green-theme {
+            --primary-color: #27ae60; /* Emerald Green */
+            --secondary-color: #1a7d4a; /* Dark Green */
+            --accent-color-1: #e74c3c; /* Red */
+            --accent-color-2: #f39c12; /* Orange */
+            --bg-dark-1: #0e1a14;
+            --bg-dark-2: #1b2e24;
+            --bg-dark-3: #223a2d;
+            --text-light: #e0ffe0;
+            --text-muted: #a0c0a0;
+        }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans Gujarati', sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark-1), var(--bg-dark-2), var(--bg-dark-3));
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+            overflow: hidden;
+            position: relative;
+            transition: background 0.5s ease; /* Smooth theme transition */
+        }
+
+        @keyframes backgroundBreathe {
+            0%, 100% { background-position: 0% 50%, 100% 50%, 50% 100%; }
+            50% { background-position: 100% 50%, 0% 50%, 50% 0%; }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255, 107, 107, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(52, 152, 219, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(155, 89, 182, 0.07) 0%, transparent 35%);
+            background-size: 200% 200%;
+            pointer-events: none;
+            z-index: -1;
+            animation: backgroundBreathe 20s ease-in-out infinite;
+        }
+
+        .container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            width: 100%;
+            z-index: 1;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .month-display {
+            font-size: clamp(2rem, 6vw, 2.5rem);
+            font-weight: 300;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        #languageToggle {
+            padding: 8px 16px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        #languageToggle:hover {
+            background-color: #8e44ad; /* slightly darker secondary */
+            transform: translateY(-2px);
+        }
+
+        #theme-switcher {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #theme-switcher button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid var(--text-light);
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        #theme-switcher button:hover {
+            transform: scale(1.1);
+        }
+
+        #theme-switcher button.active {
+            border-color: var(--accent-color-1);
+            box-shadow: 0 0 10px var(--accent-color-1);
+        }
+
+        #theme-switcher button#default-theme { background: #3498db; }
+        #theme-switcher button#gold-theme { background: #d4af37; }
+        #theme-switcher button#green-theme { background: #27ae60; }
+
+
+        .clock-container {
+            position: relative;
+            width: var(--clock-size);
+            height: var(--clock-size);
+            border: 2px solid rgba(52, 152, 219, 0.2);
+            border-radius: 50%;
+            margin: auto;
+            background:
+                radial-gradient(circle at center, rgba(26, 26, 46, 0.9) 0%, rgba(13, 18, 45, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            animation: fadeInUp 1s ease-out 0.4s both, clockGlow 5s ease-in-out infinite alternate;
+            flex-shrink: 0;
+            overflow: hidden;
+            box-shadow:
+                0 0 20px rgba(52, 152, 219, 0.2),
+                0 15px 30px rgba(0, 0, 0, 0.3),
+                inset 0 0 25px rgba(255, 255, 255, 0.03);
+            transition: background 0.5s ease, box-shadow 0.5s ease; /* Smooth theme transition */
+        }
+
+        @keyframes clockGlow {
+            to {
+                box-shadow:
+                    0 0 40px rgba(52, 152, 219, 0.4),
+                    0 20px 45px rgba(0, 0, 0, 0.4),
+                    inset 0 0 35px rgba(255, 255, 255, 0.05);
+            }
+        }
+
+        .clock-container::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color-1), var(--accent-color-2));
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotate 8s linear infinite;
+            transition: background 0.5s ease; /* Smooth theme transition */
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            border-radius: 10px;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+        }
+
+        .hour-hand { width: 6px; height: calc(var(--clock-size) * 0.25); background: linear-gradient(to top, var(--accent-color-1), #ff6b6b); z-index: 4; transition: background 0.5s ease; }
+        .minute-hand { width: 4px; height: calc(var(--clock-size) * 0.35); background: linear-gradient(to top, var(--primary-color), #74b9ff); z-index: 3; transition: background 0.5s ease; }
+        .second-hand { width: 2px; height: calc(var(--clock-size) * 0.4); background: linear-gradient(to top, var(--accent-color-2), #fdcb6e); z-index: 2; transition: transform 0.05s cubic-bezier(0.1, 2.7, 0.58, 1), background 0.5s ease; }
+
+        .center-dot {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 12px; height: 12px;
+            background: var(--text-light);
+            border-radius: 50%;
+            z-index: 6;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            transition: background 0.5s ease, box-shadow 0.5s ease; /* Smooth theme transition */
+        }
+
+        .digital-time-display {
+            font-size: clamp(2.5rem, 10vw, 4rem);
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent-color-2), var(--accent-color-1));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+            animation: fadeInUp 1s ease-out 0.8s both;
+            letter-spacing: 5px;
+            text-shadow: 0 0 15px rgba(243, 156, 18, 0.3);
+            transition: background 0.5s ease, text-shadow 0.5s ease;
+        }
+
+        .digital-date-display {
+            font-size: clamp(2.2rem, 8vw, 3rem);
+            font-weight: 700;
+            margin-top: 25px;
+            background: linear-gradient(135deg, var(--text-light), #74b9ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+            animation: fadeInUp 1s ease-out 0.6s both;
+            letter-spacing: 3px;
+            transition: background 0.5s ease;
+        }
+
+        .clock-face-elements {
+            position: absolute;
+            width: 100%; height: 100%;
+            top: 0; left: 0;
+        }
+
+        .clock-buttons button {
+            position: absolute;
+            font-family: inherit;
+            transform: translate(-50%, -50%);
+            transition: all 0.2s ease-out;
+            width: clamp(45px, 11vw, 55px);
+            height: clamp(45px, 11vw, 55px);
+            border-radius: 50%;
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            background: rgba(26, 26, 46, 0.7);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            font-size: clamp(16px, 4.5vw, 22px);
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: linear-gradient(45deg, #a4c6e6, #c2a7db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3), 0 0 15px rgba(164, 198, 230, 0.2);
+            line-height: 1;
+            padding: 0;
+            overflow: hidden;
+
+            /* Tooltip related styles */
+            position: absolute;
+            z-index: 5; /* Ensure buttons are above Rudrakshas */
+        }
+
+        .clock-buttons button:hover {
+            background: rgba(52, 152, 219, 0.4);
+            border-color: rgba(52, 152, 219, 0.9);
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow:
+                0 0 35px rgba(52, 152, 219, 0.7),
+                0 0 15px rgba(255, 255, 255, 0.3);
+            -webkit-text-fill-color: var(--text-light);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(52, 152, 219, 0.6);
+        }
+
+        .clock-buttons button.current-hour {
+            border: 2px solid var(--accent-color-1);
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.5), rgba(155, 89, 182, 0.5));
+            box-shadow: 0 0 35px rgba(231, 76, 60, 0.8), inset 0 0 10px rgba(255, 255, 255, 0.2);
+            font-weight: 800;
+            transform: translate(-50%, -50%) scale(1.25);
+            -webkit-text-fill-color: var(--text-light);
+            text-shadow: 0 0 18px rgba(255, 255, 255, 0.9), 0 0 35px rgba(231, 76, 60, 0.7);
+        }
+
+        /* Rudraksha Image Styles */
+        .rudraksha-container {
+            position: absolute;
+            width: clamp(30px, 8vw, 40px); /* Adjust size as needed */
+            height: clamp(30px, 8vw, 40px);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1; /* Ensure they are above the clock face background */
+            cursor: default;
+            overflow: hidden; /* Clip the image to the circle */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Optional shadow */
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+
+        .rudraksha-container:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .rudraksha-image {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensure the image fills the circle */
+        }
+
+
+        .jyotirlinga-info-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 20, 0.5);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .jyotirlinga-info-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            width: 90%;
+            max-width: 540px;
+            background: rgba(26, 26, 46, 0.98);
+            border-radius: 25px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            padding: clamp(25px, 5vw, 40px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid rgba(52, 152, 219, 0.3);
+            transform: scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 90vh; /* Limit height for scrollability on small screens */
+            overflow-y: auto; /* Enable scrolling */
+        }
+
+        .jyotirlinga-info-modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-content img {
+            width: 100%;
+            max-height: 220px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-content h3 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--text-light), #74b9ff);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .modal-content p {
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .modal-content .location {
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            color: #74b9ff;
+            margin-bottom: 15px; /* Reduced for other elements below */
+            font-weight: 500;
+        }
+
+        .modal-content audio {
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 15px;
+            display: block; /* Always show if present */
+        }
+
+        .modal-content .video-player {
+            width: 100%;
+            margin-bottom: 25px;
+            aspect-ratio: 16 / 9; /* Standard video aspect ratio */
+            background-color: #000; /* Placeholder background */
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .modal-content .video-player iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .modal-content button.close-modal {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+            transition: all 0.3s ease;
+            margin-top: 10px; /* Space between buttons */
+        }
+        .modal-content button.close-modal:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(231, 76, 60, 0.4);
+        }
+
+        .shloka-text {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-weight: 500;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.8;
+            background: linear-gradient(135deg, var(--text-light), var(--primary-color));
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            font-family: 'Noto Sans Gujarati', sans-serif; /* Prefer Gujarati font for Shloka */
+        }
+
+
+        @media (prefers-reduced-motion: reduce) {
+            body::before,
+            .clock-container,
+            .clock-container::before,
+            .second-hand,
+            .modal-content,
+            .jyotirlinga-info-modal {
+                animation: none !important;
+                transition: none !important;
+            }
+        }

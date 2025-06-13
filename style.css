@@ -3,7 +3,7 @@
 
         /* Default Theme Variables */
         :root {
-            --clock-size: clamp(280px, 90vw, 420px);
+            --clock-size: clamp(280px, 90vw, 420px); /* Adjusted min size for smaller screens */
             --primary-color: #3498db;
             --secondary-color: #9b59b6;
             --accent-color-1: #e74c3c;
@@ -93,6 +93,9 @@
             padding: 20px;
             width: 100%;
             z-index: 1;
+            /* Added for better mobile spacing on very small screens */
+            padding-left: 10px;
+            padding-right: 10px;
         }
 
         @keyframes fadeInUp {
@@ -101,7 +104,7 @@
         }
 
         .month-display {
-            font-size: clamp(2rem, 6vw, 2.5rem);
+            font-size: clamp(1.8rem, 6vw, 2.5rem); /* Slightly smaller min-font on mobile */
             font-weight: 300;
             margin-bottom: 20px;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
@@ -123,6 +126,8 @@
             color: var(--text-light);
             font-weight: bold;
             transition: background-color 0.3s ease, transform 0.2s ease;
+            /* Ensure it's readable on smaller screens */
+            font-size: 0.9rem;
         }
         #languageToggle:hover {
             background-color: #8e44ad; /* slightly darker secondary */
@@ -133,6 +138,8 @@
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
+            /* Center on mobile */
+            justify-content: center;
         }
 
         #theme-switcher button {
@@ -215,7 +222,7 @@
         .minute-hand { width: 4px; height: calc(var(--clock-size) * 0.35); background: linear-gradient(to top, var(--primary-color), #74b9ff); z-index: 3; transition: background 0.5s ease; }
         .second-hand { width: 2px; height: calc(var(--clock-size) * 0.4); background: linear-gradient(to top, var(--accent-color-2), #fdcb6e); z-index: 2; transition: transform 0.05s cubic-bezier(0.1, 2.7, 0.58, 1), background 0.5s ease; }
 
-        .center-dot {
+        .center-dot { /* This class is not used in HTML, but kept for completeness */
             position: absolute;
             top: 50%; left: 50%;
             width: 12px; height: 12px;
@@ -228,7 +235,7 @@
         }
 
         .digital-time-display {
-            font-size: clamp(2.5rem, 10vw, 4rem);
+            font-size: clamp(2.2rem, 10vw, 4rem); /* Adjusted min-font on mobile */
             font-weight: 700;
             margin-top: 40px;
             margin-bottom: 10px;
@@ -244,7 +251,7 @@
         }
 
         .digital-date-display {
-            font-size: clamp(2.2rem, 8vw, 3rem);
+            font-size: clamp(1rem, 8vw, 3rem); /* Adjusted min-font on mobile */
             font-weight: 700;
             margin-top: 25px;
             background: linear-gradient(135deg, var(--text-light), #74b9ff);
@@ -268,14 +275,14 @@
             font-family: inherit;
             transform: translate(-50%, -50%);
             transition: all 0.2s ease-out;
-            width: clamp(45px, 11vw, 55px);
-            height: clamp(45px, 11vw, 55px);
+            width: clamp(40px, 11vw, 55px); /* Adjusted min width for better touch target */
+            height: clamp(40px, 11vw, 55px); /* Adjusted min height for better touch target */
             border-radius: 50%;
             border: 1px solid rgba(52, 152, 219, 0.3);
             background: rgba(26, 26, 46, 0.7);
             backdrop-filter: blur(10px);
             cursor: pointer;
-            font-size: clamp(16px, 4.5vw, 22px);
+            font-size: clamp(14px, 4.5vw, 22px); /* Adjusted min font size */
             font-weight: 700;
             display: flex;
             justify-content: center;
@@ -289,7 +296,7 @@
             padding: 0;
             overflow: hidden;
 
-            /* Tooltip related styles */
+            /* Tooltip related styles (keep for desktop, won't show on touch devices) */
             position: absolute;
             z-index: 5; /* Ensure buttons are above Rudrakshas */
         }
@@ -318,8 +325,8 @@
         /* Rudraksha Image Styles */
         .rudraksha-container {
             position: absolute;
-            width: clamp(30px, 8vw, 40px); /* Adjust size as needed */
-            height: clamp(30px, 8vw, 40px);
+            width: clamp(25px, 8vw, 40px); /* Adjusted min size for smaller screens */
+            height: clamp(25px, 8vw, 40px); /* Adjusted min size for smaller screens */
             border-radius: 50%;
             transform: translate(-50%, -50%);
             z-index: 1; /* Ensure they are above the clock face background */
@@ -362,20 +369,21 @@
         }
 
         .modal-content {
-            width: 90%;
+            width: 95%; /* Increased width for smaller screens */
             max-width: 540px;
             background: rgba(26, 26, 46, 0.98);
             border-radius: 25px;
             box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
-            padding: clamp(25px, 5vw, 40px);
+            padding: clamp(20px, 5vw, 40px); /* Adjusted padding for smaller screens */
             display: flex;
             flex-direction: column;
             align-items: center;
             border: 2px solid rgba(52, 152, 219, 0.3);
             transform: scale(0.95);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 90vh; /* Limit height for scrollability on small screens */
+            max-height: 95vh; /* Increased max-height for more content on small screens */
             overflow-y: auto; /* Enable scrolling */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
         }
 
         .jyotirlinga-info-modal.active .modal-content {
@@ -384,16 +392,16 @@
 
         .modal-content img {
             width: 100%;
-            max-height: 220px;
+            max-height: 200px; /* Slightly reduced max height for image on small screens */
             border-radius: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 20px; /* Adjusted margin */
             object-fit: cover;
             border: 2px solid rgba(255, 255, 255, 0.1);
         }
 
         .modal-content h3 {
-            font-size: clamp(1.5rem, 5vw, 2rem);
-            margin-bottom: 15px;
+            font-size: clamp(1.4rem, 5vw, 2rem); /* Adjusted min font size */
+            margin-bottom: 12px; /* Adjusted margin */
             background: linear-gradient(135deg, var(--text-light), #74b9ff);
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -401,17 +409,17 @@
         }
 
         .modal-content p {
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            font-size: clamp(0.85rem, 2.5vw, 1rem); /* Adjusted min font size */
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* Adjusted margin */
             color: var(--text-muted);
             line-height: 1.6;
         }
 
         .modal-content .location {
-            font-size: clamp(1rem, 3vw, 1.1rem);
+            font-size: clamp(0.95rem, 3vw, 1.1rem); /* Adjusted min font size */
             color: #74b9ff;
-            margin-bottom: 15px; /* Reduced for other elements below */
+            margin-bottom: 15px;
             font-weight: 500;
         }
 
@@ -424,7 +432,7 @@
 
         .modal-content .video-player {
             width: 100%;
-            margin-bottom: 25px;
+            margin-bottom: 20px; /* Adjusted margin */
             aspect-ratio: 16 / 9; /* Standard video aspect ratio */
             background-color: #000; /* Placeholder background */
             border-radius: 10px;
@@ -442,13 +450,13 @@
             color: white;
             border: none;
             border-radius: 12px;
-            padding: 12px 24px;
-            font-size: 1rem;
+            padding: 10px 20px; /* Slightly adjusted padding */
+            font-size: 0.95rem; /* Slightly adjusted font size */
             font-weight: 500;
             cursor: pointer;
             box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
             transition: all 0.3s ease;
-            margin-top: 10px; /* Space between buttons */
+            margin-top: 10px;
         }
         .modal-content button.close-modal:hover {
             transform: translateY(-3px);
@@ -456,10 +464,10 @@
         }
 
         .shloka-text {
-            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-size: clamp(0.85rem, 2.5vw, 1.1rem); /* Adjusted min font size */
             font-weight: 500;
             color: var(--text-light);
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* Adjusted margin */
             line-height: 1.8;
             background: linear-gradient(135deg, var(--text-light), var(--primary-color));
             background-clip: text;
@@ -486,10 +494,10 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 50px;  
-            height: 50px; 
+            width: clamp(40px, 12vw, 50px); /* Adjusted for responsiveness */
+            height: clamp(40px, 12vw, 50px); /* Adjusted for responsiveness */
             border-radius: 50%;
-            overflow: auto;
+            overflow: hidden; /* Changed to hidden to clip the image */
             z-index: 10;
         }
 
@@ -499,3 +507,17 @@
             object-fit: cover
         }
 
+        /* Small screen specific adjustments */
+        @media (max-width: 480px) {
+            .month-display {
+                letter-spacing: 2px; /* Slightly reduce for very small screens */
+            }
+
+            .digital-time-display {
+                letter-spacing: 3px; /* Slightly reduce for very small screens */
+            }
+
+            .digital-date-display {
+                letter-spacing: 2px; /* Slightly reduce for very small screens */
+            }
+        }
